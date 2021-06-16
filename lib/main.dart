@@ -65,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+  emptycode(){}
   getlink()async{
     var check = await DirectLink.check("https://www.youtube.com/watch?v=NY9BVL8sb8Q");
     // add your url
