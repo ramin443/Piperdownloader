@@ -1,4 +1,6 @@
 import 'package:direct_link/direct_link.dart';
+import 'package:facebook_video_download/data/facebookData.dart';
+import 'package:facebook_video_download/data/facebookPost.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -59,22 +61,34 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: getlink,
+        onPressed: getfblink,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
     );
   }
   emptycode(){}
+  getfblink()async{
+    FacebookPost data = await FacebookData.postFromUrl(
+        "https://fb.watch/69SnKoqUzk/");
+    print(data.postUrl);
+    print(data.videoHdUrl);
+    print(data.videoMp3Url);
+    print(data.videoSdUrl);
+    print(data.commentsCount);
+    print(data.sharesCount);
+
+  }
   getlink()async{
-    var check = await DirectLink.check("https://www.youtube.com/watch?v=NY9BVL8sb8Q");
+    var check = await DirectLink.check("https://fb.watch/69SlWTfRRZ/");
     // add your url
     if (check == null) {
       // null condition
     }else{
       check.forEach((e) {
-        print(e.quality);
-        print(e.link);
+        print(e);
+     //   print(e.quality);
+   //     print(e.link);
       });
     }
   }
