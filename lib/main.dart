@@ -2,6 +2,7 @@ import 'package:direct_link/direct_link.dart';
 import 'package:facebook_video_download/data/facebookData.dart';
 import 'package:facebook_video_download/data/facebookPost.dart';
 import 'package:flutter/material.dart';
+import 'package:piperdownloader/screens/base.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,12 +13,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Youtube Video Downloader',
       theme: ThemeData(
 
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Base(),
     );
   }
 }
