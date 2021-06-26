@@ -23,6 +23,7 @@ return Container(
   width: screenwidth,
   child: Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.end,
     children: [
 Container(
   child: Text("All Downloads",style: TextStyle(

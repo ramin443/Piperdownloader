@@ -58,6 +58,11 @@ flutter:
       - assets/images/Saly-1@3x.png
       - assets/images/emptydownload.png
       - assets/images/nodownloads.svg
+      - assets/images/caution.jpg
+      - assets/images/casual-life-3d-meditation-1@3x.png
+      - assets/images/cautionalert.jpg
+      - assets/images/downloadsplashlogo.svg
+
 
   #   - images/a_dot_ham.jpeg
 

@@ -3,6 +3,7 @@ import 'package:facebook_video_download/data/facebookData.dart';
 import 'package:facebook_video_download/data/facebookPost.dart';
 import 'package:flutter/material.dart';
 import 'package:piperdownloader/screens/base.dart';
+import 'package:piperdownloader/screens/initial/splashscreen.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,10 +17,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Youtube Video Downloader',
       theme: ThemeData(
-
         primarySwatch: Colors.blue,
       ),
-      home: Base(),
+      home: SplashScreen(),
+      routes: <String,WidgetBuilder>{
+        '/Base':(BuildContext context)=> Base()
+      },
     );
   }
 }

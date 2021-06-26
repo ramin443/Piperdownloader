@@ -8,6 +8,8 @@ import 'package:piperdownloader/getxcontrollers/bottomnavigationcontroller.dart'
 import 'package:piperdownloader/screens/pages/downloads.dart';
 import 'package:piperdownloader/screens/pages/home.dart';
 import 'package:piperdownloader/screens/pages/settings.dart';
+import 'package:piperdownloader/screens/sharablewidgets/canceldownload.dart';
+import 'package:piperdownloader/screens/sharablewidgets/deletevideo.dart';
 class Base extends StatelessWidget {
   final BottomNavigationController bottomNavigationController=Get.put(BottomNavigationController());
 
@@ -24,6 +26,21 @@ init: BottomNavigationController(),
           elevation: 0,
           backgroundColor: Colors.transparent,
           centerTitle: false,
+          actions: [
+            IconButton(onPressed: (){
+              showDialog(context: context,
+
+                  builder: (_)=>
+                   SimpleDialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(16)),
+                        ),
+
+                 children:[DeleteVideo()])
+              );
+
+            }, icon: Icon(CupertinoIcons.plus,color: Colors.black87,))
+          ],
           leading:
           Container(
             margin: EdgeInsets.only(left: 8,top: 8),
