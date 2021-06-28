@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:piperdownloader/screens/sharablewidgets/downloadinstruction2.dart';
 import 'package:piperdownloader/screens/sharablewidgets/rateus.dart';
 class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+        child:Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -11,9 +14,12 @@ class Settings extends StatelessWidget {
         Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children:[  RateUs(),]),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children:[  DownloadInstructionTwo(),]),
 
         ],
       ),
-    );
+    ));
   }
 }

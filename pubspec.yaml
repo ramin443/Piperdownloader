@@ -36,6 +36,7 @@ dependencies:
   screenshot: ^1.2.1
   social_share: ^2.1.1
   get: ^4.1.4
+  connectivity: ^3.0.6
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +63,8 @@ flutter:
       - assets/images/casual-life-3d-meditation-1@3x.png
       - assets/images/cautionalert.jpg
       - assets/images/downloadsplashlogo.svg
+      - assets/images/404errorcode.png
+      - assets/images/noint.svg
 
 
   #   - images/a_dot_ham.jpeg

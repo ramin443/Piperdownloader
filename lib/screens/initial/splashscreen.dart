@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   }
 
   startTime() async {
-    var _duration = new Duration(seconds: 7);
+    var _duration = new Duration(seconds: 5);
     return new Timer(_duration, navigationPage);
   }
   void navigationPage() {
