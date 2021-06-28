@@ -32,6 +32,11 @@ dependencies:
   flutter_svg: ^0.22.0
   flutter_downloader: ^1.6.1
   rate_my_app: ^1.1.0+1
+  facebook_video_download: ^0.0.4
+  screenshot: ^1.2.1
+  social_share: ^2.1.1
+  get: ^4.1.4
+  connectivity: ^3.0.6
 
 dev_dependencies:
   flutter_test:
@@ -49,8 +54,19 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+      - assets/images/ytdownlogo.svg
+      - assets/images/Saly-1@3x.png
+      - assets/images/emptydownload.png
+      - assets/images/nodownloads.svg
+      - assets/images/caution.jpg
+      - assets/images/casual-life-3d-meditation-1@3x.png
+      - assets/images/cautionalert.jpg
+      - assets/images/downloadsplashlogo.svg
+      - assets/images/404errorcode.png
+      - assets/images/noint.svg
+
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -64,10 +80,16 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+      - family: ProximaNovaBold
+        fonts:
+          - asset: assets/fonts/proxima_nova_bold.ttf
+      - family: ProximaNovaRegular
+        fonts:
+          - asset: assets/fonts/proxima_nova_regular.ttf
+      - family: ProximaNovaLight
+        fonts:
+          - asset: assets/fonts/proxima_nova_thin.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
