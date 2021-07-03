@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:piperdownloader/constants/colorconstants.dart';
 import 'package:piperdownloader/constants/fontconstants.dart';
 import 'package:piperdownloader/getxcontrollers/bottomnavigationcontroller.dart';
+import 'package:piperdownloader/getxcontrollers/clipboardcontroller.dart';
 import 'package:piperdownloader/screens/offline/nointernetpage.dart';
 import 'package:piperdownloader/screens/pages/downloads.dart';
 import 'package:piperdownloader/screens/pages/home.dart';
@@ -14,6 +15,7 @@ import 'package:piperdownloader/screens/sharablewidgets/canceldownload.dart';
 import 'package:piperdownloader/screens/sharablewidgets/deletevideo.dart';
 class Base extends StatelessWidget {
   final BottomNavigationController bottomNavigationController=Get.put(BottomNavigationController());
+  final ClipboardController clipboardController=Get.put(ClipboardController());
   final Connectivity connectivity = Connectivity();
 
   List pages=[Home(),Downloads(),Settings()];
@@ -23,6 +25,9 @@ class Base extends StatelessWidget {
     double screenWidth=MediaQuery.of(context).size.width;
     return
   GetBuilder(
+    initState: (v){
+      clipboardController.addclipboardtextlistener();
+    },
 init: BottomNavigationController(),
     builder: (bottomnavigation){
   return
