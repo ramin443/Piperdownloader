@@ -9,11 +9,13 @@ import 'package:piperdownloader/getxcontrollers/clipboardcontroller.dart';
 import 'package:piperdownloader/getxcontrollers/downloadcontroller.dart';
 import 'package:piperdownloader/screens/downloadwidgets/CurrentDownloadInfo.dart';
 import 'package:piperdownloader/screens/downloadwidgets/DownloadedVideoCard.dart';
+import 'package:piperdownloader/screens/downloadwidgets/error_box.dart';
 import 'package:piperdownloader/screens/downloadwidgets/fetchingdownloadinfo.dart';
 import 'package:piperdownloader/screens/sharablewidgets/downloadinstruction1.dart';
 import 'package:piperdownloader/screens/sharablewidgets/rateus.dart';
 class Home extends StatelessWidget {
   final ClipboardController clipboardController=Get.put(ClipboardController());
+  final DownloadController downloadController=Get.put(DownloadController());
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +29,11 @@ class Home extends StatelessWidget {
             return
               GetBuilder(
           initState: (v){
-            clipboardController.addclipboardtextlistener();
           },
           init: ClipboardController(),
           builder: (clipboardcontroller){
             return   GetBuilder(
           initState: (v){
-            clipboardController.addclipboardtextlistener();
           },
           init: BottomNavigationController(),
           builder: (bottomnavigation){
@@ -84,7 +84,9 @@ border: Border.all(color: Color(0xff707070).withOpacity(0.2),width: 1
                  },
                  child: Icon(CupertinoIcons.xmark,
                  color: Colors.black87,
-                     size: 17,),
+               //      size: 17,
+                 size: screenwidth*0.04136,
+                 ),
                ),
                 border: InputBorder.none,
                 hintText: "Paste Youtube video link here",
@@ -102,6 +104,7 @@ border: Border.all(color: Color(0xff707070).withOpacity(0.2),width: 1
            children: [
              GestureDetector(
                onTap: (){
+                 clipboardController.emptyeverything();
                  FlutterClipboard.paste().then((value) {
 clipboardController.pastetoclipboard();
                  });
@@ -137,7 +140,7 @@ clipboardController.pastetoclipboard();
                //      vertical: 9
                  vertical: screenwidth*0.0218),
                  decoration: BoxDecoration(
-                   color: clipboardController.showdownload?royalbluethemedcolor:royalbluethemedcolor.withOpacity(0.41),
+                   color: clipboardController.showdownload==2?royalbluethemedcolor:royalbluethemedcolor.withOpacity(0.41),
                    borderRadius: BorderRadius.all(Radius.circular(14)),
                    boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.13),offset: Offset(0,3),blurRadius: 10)]
                  ),
@@ -154,6 +157,10 @@ clipboardController.pastetoclipboard();
           Row(
            mainAxisAlignment: MainAxisAlignment.center,
           children:[
+            clipboardController.showdownload==1?
+                FetchingDownloadsInfo():
+            clipboardController.showdownload==2?
+CurrentDownloadInfo():
             nolinkpasted(context),
           ]),
           DownloadInstructionOne(),

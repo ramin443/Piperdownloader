@@ -38,7 +38,7 @@ class NoInternet extends StatelessWidget {
           //        top: 16
             top: screenWidth*0.03892
               ),
-              child: SvgPicture.asset("assets/images/noint.svg",width: screenWidth*0.919,),
+              child: Image.asset("assets/images/5356680.jpg",width: screenWidth*0.919,),
             )
           ],
         ),

@@ -4,6 +4,7 @@ import 'package:facebook_video_download/data/facebookPost.dart';
 import 'package:flutter/material.dart';
 import 'package:piperdownloader/screens/base.dart';
 import 'package:piperdownloader/screens/initial/splashscreen.dart';
+import 'package:piperdownloader/testers/pubtester.dart';
 
 void main() {
   runApp(MyApp());

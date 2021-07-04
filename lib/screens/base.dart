@@ -1,4 +1,5 @@
 import 'package:connectivity/connectivity.dart';
+import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -83,7 +84,7 @@ bottomNavigationBar: BottomNavigationBar(
     bottomNavigationController.setindex(index);
   },
   items: [
-    BottomNavigationBarItem(icon: Icon(CupertinoIcons.home,
+    BottomNavigationBarItem(icon: Icon(FeatherIcons.home,
  //   size: 24,
    size: screenWidth*0.0583,
     ),
@@ -94,7 +95,7 @@ fontFamily: proximanovaregular,
   //    fontSize: 12.5
     ),)
     ),
-    BottomNavigationBarItem(icon: Icon(CupertinoIcons.download_circle,
+    BottomNavigationBarItem(icon: Icon(FeatherIcons.download,
   //    size: 24,
       size: screenWidth*0.0583,
     ),
@@ -105,7 +106,7 @@ fontFamily: proximanovaregular,
               fontSize: screenWidth*0.03041
           ),)
     ),
-    BottomNavigationBarItem(icon: Icon(CupertinoIcons.settings,
+    BottomNavigationBarItem(icon: Icon(FeatherIcons.settings,
    //   size: 24,
       size: screenWidth*0.0583,
     ),

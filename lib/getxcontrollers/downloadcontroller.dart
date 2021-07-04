@@ -16,6 +16,10 @@ class DownloadController extends GetxController {
     hasvalidlink = true;
     update();
   }
+  setnovalidlink() {
+    hasvalidlink = false;
+    update();
+  }
 
   Widget topdownloadrow(BuildContext context) {
     double screenwidth = MediaQuery.of(context).size.width;
