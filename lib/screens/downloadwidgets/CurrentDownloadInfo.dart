@@ -1,3 +1,4 @@
+import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:piperdownloader/constants/colorconstants.dart';
 import 'package:piperdownloader/constants/fontconstants.dart';
@@ -175,9 +176,9 @@ Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Icon(Icons.download,
+          Icon(FeatherIcons.download,
             //      size: 20,
-            size: screenWidth*0.0486,
+            size: screenWidth*0.0466,
             color: Colors.white,),
           Container(
             child: Text(quality,
