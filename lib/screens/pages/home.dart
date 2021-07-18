@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,7 @@ import 'package:piperdownloader/screens/downloadwidgets/error_box.dart';
 import 'package:piperdownloader/screens/downloadwidgets/fetchingdownloadinfo.dart';
 import 'package:piperdownloader/screens/sharablewidgets/downloadinstruction1.dart';
 import 'package:piperdownloader/screens/sharablewidgets/rateus.dart';
+import 'package:piperdownloader/services/service.dart';
 class Home extends StatelessWidget {
   final ClipboardController clipboardController=Get.put(ClipboardController());
   final DownloadController downloadController=Get.put(DownloadController());
@@ -23,6 +26,7 @@ class Home extends StatelessWidget {
     return
       GetBuilder(
           initState: (v){
+            Services.getvideoinfo();
           },
           init: DownloadController(),
           builder: (downloadcontroller){
@@ -104,7 +108,7 @@ border: Border.all(color: Color(0xff707070).withOpacity(0.2),width: 1
            children: [
              GestureDetector(
                onTap: (){
-                 clipboardController.emptyeverything();
+                 clipboardController.emptyeverything(context);
                  FlutterClipboard.paste().then((value) {
 clipboardController.pastetoclipboard();
                  });
@@ -128,7 +132,11 @@ clipboardController.pastetoclipboard();
                  fontFamily: proximanovaregular
                )),
              ))),
-             AnimatedContainer(
+             GestureDetector(
+               onTap: (){
+
+               },
+               child:AnimatedContainer(
                duration: Duration(milliseconds: 200),
          //      width: 111,
             width: screenwidth*0.2700,
@@ -150,7 +158,7 @@ clipboardController.pastetoclipboard();
                      color: Colors.white,
                      fontFamily: proximanovaregular
                  ),
-                 ))),
+                 )))),
            ],
          ),
 
@@ -206,20 +214,7 @@ color: Color(0xffFAFAFA).withOpacity(0.52),
           Container(
             child: Image.asset("assets/images/Saly-1@3x.png",width: screenwidth*0.49427,),
           ),
-          Container(
-            child:
 
-            Text("The link will be automatically detected after copying. If link"
-           " is not detected, Press the paste link. If link still does not show"
-           " up, please ensure that you have copied the link",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontFamily: proximanovaregular,
-                  color: Colors.black.withOpacity(0.58),
-                  //    fontSize: 16
-                  fontSize: screenwidth*0.0286
-              ),),
-          ),
         ],
       ),
     );

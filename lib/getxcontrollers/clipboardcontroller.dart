@@ -45,11 +45,15 @@ class ClipboardController extends GetxController {
       if (linkfieldcontroller.text != "") {}
     });
   }
-  emptyeverything(){
+  emptyeverything(BuildContext context){
     extractedlink="";
     showdownload=0;
     clipboarddata='';
     linkfieldcontroller.clear();
+    FocusScopeNode currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
     update();
   }
   Future<void> extractYoutubeLink(String youtubelink) async {
@@ -83,7 +87,7 @@ class ClipboardController extends GetxController {
       // Do what ever you want with the value.
       linkfieldcontroller.text = value;
       clipboarddata = value;
-      if (value.contains("youtube")) {
+      if (value.contains("you")) {
         showdownload = 1;
       }
       update();

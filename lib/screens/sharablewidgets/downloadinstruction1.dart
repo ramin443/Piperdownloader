@@ -63,25 +63,20 @@ class DownloadInstructionOne extends StatelessWidget {
                     top:subpoint==""?screenwidth*0.0194:0,bottom: subpoint==""? screenwidth*0.0194:0
                 ),
                 child:
-      RichText(
-        text: TextSpan(
-            children: [
-              TextSpan(
-                text: "Step $stepnumber:  ",style: TextStyle(
-                  fontFamily: proximanovabold
-              ),),
-              TextSpan(
-                text: steppoint,),
-            ],
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children:[
+                        stepcountcontainer(context,stepnumber),
+Expanded(
+  child:
+     Text( steppoint,
             style: TextStyle(
                 fontFamily: proximanovaregular,
                 color: Colors.black87,
                 //      fontSize: 14
                 fontSize: screenwidth*0.03527
             )
-        ),
-
-      )),
+        ))])),
       subpoint!=""?
       Container(
         margin: EdgeInsets.only(
@@ -97,6 +92,30 @@ color: Colors.black.withOpacity(0.49),
         ),),
       ):SizedBox(height: 0,)
       ]),
+    );
+  }
+  Widget stepcountcontainer(BuildContext context,int stepnumber){
+   double screenwidth=MediaQuery.of(context).size.width;
+    return Container(
+      margin: EdgeInsets.only(
+    //      right: 12
+          right: screenwidth*0.0291
+      ),
+      padding: EdgeInsets.all(
+  //       7.5
+   screenwidth*0.0182   ),
+      decoration: BoxDecoration(
+        color: Colors.redAccent,
+        shape: BoxShape.circle
+      ),
+      child: Center(
+        child: Text("$stepnumber",style: TextStyle(
+          fontFamily: proximanovaregular,
+          color: Colors.white,
+    //    fontSize: 14.5
+      fontSize: screenwidth*0.03527),),
+      ),
+
     );
   }
 }
