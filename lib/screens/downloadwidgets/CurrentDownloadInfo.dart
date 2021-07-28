@@ -1,9 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:piperdownloader/constants/colorconstants.dart';
 import 'package:piperdownloader/constants/fontconstants.dart';
 
 class CurrentDownloadInfo extends StatelessWidget {
+  final String? thumbnailimagelink;
+  final String? videotitle;
+  final String? channelimage;
+  final String? channeltitle;
+  final String? channeldescription;
+  CurrentDownloadInfo({@required this.thumbnailimagelink,@required this.videotitle
+    ,@required this.channelimage,@required this.channeltitle,@required this.channeldescription});
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -28,12 +36,19 @@ class CurrentDownloadInfo extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  //    height: 67,width: 67,
-                  height: screenWidth * 0.1630, width: screenWidth * 0.1630,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(11)),
-                      color: royalbluethemedcolor),
+                ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(11)),
+                  child: Container(
+                    //    height: 67,width: 67,
+                    height: screenWidth * 0.1630, width: screenWidth * 0.1630,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(11)),
+                        color: royalbluethemedcolor),
+                    child: CachedNetworkImage(
+                      imageUrl: thumbnailimagelink!,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
                 Expanded(
                     child: Container(
@@ -48,9 +63,7 @@ class CurrentDownloadInfo extends StatelessWidget {
                     children: [
                       Container(
                         child: Text(
-                          "And to those tops and more."
-                          "And to those tops and more"
-                          "And to those tops and more",
+                          videotitle!,
                           textAlign: TextAlign.left,
                           maxLines: 2,
                           style: TextStyle(
@@ -102,12 +115,17 @@ class CurrentDownloadInfo extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
-                  //    height: 45,width: 45,
-                  height: screenWidth * 0.1094, width: screenWidth * 0.1094,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: greythemedcolor,
+                ClipOval(
+                  child: Container(
+                    //    height: 45,width: 45,
+                    height: screenWidth * 0.1094, width: screenWidth * 0.1094,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: greythemedcolor,
+                    ),
+                    child: CachedNetworkImage(
+                      imageUrl: channelimage!,
+                    fit: BoxFit.cover,),
                   ),
                 ),
                 Expanded(
@@ -123,8 +141,9 @@ class CurrentDownloadInfo extends StatelessWidget {
                       children: [
                         Container(
                           child: Text(
-                            "_blackeyedpeas",
+                           channeltitle!,
                             textAlign: TextAlign.center,
+                            maxLines: 1,
                             style: TextStyle(
                                 fontFamily: proximanovabold,
                                 color: blackthemedcolor,
@@ -134,8 +153,9 @@ class CurrentDownloadInfo extends StatelessWidget {
                         ),
                         Container(
                           child: Text(
-                            "Black Eyed Peas",
-                            textAlign: TextAlign.center,
+                            channeldescription!,
+                            textAlign: TextAlign.start,
+                            maxLines: 1,
                             style: TextStyle(
                                 fontFamily: proximanovaregular,
                                 color: blackthemedcolor,

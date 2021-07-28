@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:get/get.dart'as GetX;
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:piperdownloader/getxcontrollers/clipboardcontroller.dart';
 import 'package:piperdownloader/models/channelmodels.dart';
 import 'package:piperdownloader/models/video_model.dart';
 import 'package:piperdownloader/models/videomodels.dart';
@@ -10,7 +13,7 @@ import 'package:piperdownloader/models/videomodels.dart';
 import '../config.dart';
 
 
-class Services {
+class YoutubeVideoInfoController extends GetxController{
   //
   static const CHANNEL_ID = 'UCaayLD9i5x4MmIoVZxXSv_g';
   static const VIDEO_ID = 'ru_5PA8cwkE';
@@ -38,7 +41,7 @@ class Services {
     return channelInfo;
   }
 
-  static Future<int> getvideoinfo(String videoid) async {
+   Future<int> getvideoinfo(String videoid) async {
     Map<String, String> parameters = {
       'part': 'snippet',
       'id': VIDEO_ID,
@@ -55,16 +58,18 @@ class Services {
     Response response = await http.get(uri, headers: headers);
     print(response.body);
     Videos videos=Videos.fromJson(jsonDecode(response.body));
+ //   clipboardController.updatevideoinfo(videos.videos![0].video!.title,
+   //     videos.videos![0].video!.thumbnails!.maxres!.url);
     print(videos.kind);
     print(videos.videos![0].video!.title);
     print(videos.videos![0].video!.description);
     print(videos.videos![0].video!.thumbnails!.maxres!.url);
     print(videos.videos![0].video!.channelTitle);
     print(videos.videos![0].video!.channelId);
- //   getChannelInfo(videos.videos![0].video!.channelId);
+    //   getChannelInfo(videos.videos![0].video!.channelId);
 
-   // return channelInfo;
-  return 0;
+    // return channelInfo;
+    return 0;
   }
 
   static Future<VideosList> getVideosList(

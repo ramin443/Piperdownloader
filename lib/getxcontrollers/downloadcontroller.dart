@@ -15,6 +15,7 @@ class DownloadController extends GetxController {
   sethasvalidlink() {
     hasvalidlink = true;
     update();
+
   }
   setnovalidlink() {
     hasvalidlink = false;

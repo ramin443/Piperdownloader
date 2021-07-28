@@ -1,17 +1,47 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_youtube_downloader/flutter_youtube_downloader.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' as GetX;
 import 'package:piperdownloader/getxcontrollers/downloadcontroller.dart';
+import 'package:piperdownloader/getxcontrollers/youtubevideoinfocontroller.dart';
+import 'package:piperdownloader/models/channelmodels.dart';
+import 'package:piperdownloader/models/video_model.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
-class ClipboardController extends GetxController {
+import '../config.dart';
+
+class ClipboardController extends GetX.GetxController {
   int showdownload = 0;
   String clipboarddata = '';
   TextEditingController linkfieldcontroller = TextEditingController();
-  final DownloadController downloadController = Get.put(DownloadController());
+  final DownloadController downloadController = GetX.Get.put(DownloadController());
+   YoutubeVideoInfoController youtubeVideoInfoController = GetX.Get.put(YoutubeVideoInfoController());
   String? extractedlink = '';
+  String? currentvideotitle='';
+  String? currentvideothumbnaillink='';
+  String? currentyoutubechannelthumbnaillink='';
+  String? currentytchanneltitle='';
+  String? currentytchanneldescription='';
+  static const VIDEO_ID = 'PZmSTYU-3rA';
+  static const _baseUrl = 'www.googleapis.com';
 
+  updatevideoinfo(String? title,String? thumbnailink){
+    currentvideotitle=title;
+    currentvideothumbnaillink=thumbnailink;
+    update();
+  }
+  updatechannelinfo(
+      {String? title, String? description, String? thumbnailink}){
+    currentytchanneltitle=title;
+    currentyoutubechannelthumbnaillink=thumbnailink;
+    currentytchanneldescription=description;
+    update();
+  }
   checkyoutubestatus() {
     if (linkfieldcontroller.text.contains("youtube")) {
       showdownload = 1;
@@ -31,6 +61,7 @@ class ClipboardController extends GetxController {
         showdownload = 1;
         downloadController.sethasvalidlink();
         extractYoutubeLink(linkfieldcontroller.text);
+
         update();
       }
 
@@ -60,12 +91,12 @@ class ClipboardController extends GetxController {
     String? link;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      print("tried");
+  //    print("tried");
       link =
           await (FlutterYoutubeDownloader.extractYoutubeLink(youtubelink, 18));
+      getvideoinfo("twcVTnMa1ec");
       extractedlink = link;
       print(extractedlink);
-      showdownload=2;
       update();
 
     } on PlatformException {
@@ -73,6 +104,8 @@ class ClipboardController extends GetxController {
     }
     update();
   }
+
+
 
   setclipboarddata() {
     FlutterClipboard.paste().then((value) {
@@ -104,4 +137,59 @@ class ClipboardController extends GetxController {
     showdownload = 0;
     update();
   }
+  Future<int> getvideoinfo(String videoid) async {
+    Map<String, String> parameters = {
+      'part': 'snippet',
+      'id': VIDEO_ID,
+      'key': Constants.API_KEY,
+    };
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+    Uri uri = Uri.https(
+      _baseUrl,
+      '/youtube/v3/videos',
+      parameters,
+    );
+    Response response = await http.get(uri, headers: headers);
+  //  print(response.body);
+    Videos videos=Videos.fromJson(jsonDecode(response.body));
+       updatevideoinfo(videos.videos![0].video!.title,
+         videos.videos![0].video!.thumbnails!.maxres!.url);
+    getChannelInfo(videos.videos![0].video!.channelId);
+    update();
+ //   print(videos.kind);
+   // print(videos.videos![0].video!.thumbnails!.maxres!.url);
+    //   getChannelInfo(videos.videos![0].video!.channelId);
+
+    // return channelInfo;
+    return 0;
+  }
+   Future<ChannelInfo> getChannelInfo(String? channelid) async {
+    Map<String, String> parameters = {
+      'part': 'snippet',
+      'id': channelid!,
+      'key': Constants.API_KEY,
+    };
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+    };
+    Uri uri = Uri.https(
+      _baseUrl,
+      '/youtube/v3/channels',
+      parameters,
+    );
+    Response response = await http.get(uri, headers: headers);
+    // print(response.body);
+    ChannelInfo channelInfo = ChannelInfo.fromJson(jsonDecode(response.body));
+    updatechannelinfo(thumbnailink: channelInfo.items![0].snippet!.thumbnails!.high!.url,
+    title:   channelInfo.items![0].snippet!.title,
+    description: channelInfo.items![0].snippet!.description );
+    showdownload=2;
+    update();
+  //  print("Channel thumbnal");
+    //print(channelInfo.items![0].snippet!.thumbnails!.high!.url);
+    return channelInfo;
+  }
+
 }
