@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:piperdownloader/constants/colorconstants.dart';
 import 'package:piperdownloader/constants/fontconstants.dart';
 import 'package:piperdownloader/getxcontrollers/bottomnavigationcontroller.dart';
@@ -38,9 +39,9 @@ init: BottomNavigationController(),
           backgroundColor: Colors.transparent,
           centerTitle: false,
           actions: [
-            IconButton(onPressed: (){
+            IconButton(onPressed: ()async{
+              await Permission.storage.request();
               showDialog(context: context,
-
                   builder: (_)=>
                    SimpleDialog(
                         shape: RoundedRectangleBorder(

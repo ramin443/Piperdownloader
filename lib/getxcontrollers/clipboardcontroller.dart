@@ -27,7 +27,6 @@ class ClipboardController extends GetX.GetxController {
   String? currentyoutubechannelthumbnaillink='';
   String? currentytchanneltitle='';
   String? currentytchanneldescription='';
-  static const VIDEO_ID = 'PZmSTYU-3rA';
   static const _baseUrl = 'www.googleapis.com';
 
   updatevideoinfo(String? title,String? thumbnailink){
@@ -94,7 +93,8 @@ class ClipboardController extends GetX.GetxController {
   //    print("tried");
       link =
           await (FlutterYoutubeDownloader.extractYoutubeLink(youtubelink, 18));
-      getvideoinfo("twcVTnMa1ec");
+      
+      getvideoinfo(youtubelink.substring(youtubelink.length-11));
       extractedlink = link;
       print(extractedlink);
       update();
@@ -140,7 +140,7 @@ class ClipboardController extends GetX.GetxController {
   Future<int> getvideoinfo(String videoid) async {
     Map<String, String> parameters = {
       'part': 'snippet',
-      'id': VIDEO_ID,
+      'id': videoid,
       'key': Constants.API_KEY,
     };
     Map<String, String> headers = {
@@ -155,7 +155,7 @@ class ClipboardController extends GetX.GetxController {
   //  print(response.body);
     Videos videos=Videos.fromJson(jsonDecode(response.body));
        updatevideoinfo(videos.videos![0].video!.title,
-         videos.videos![0].video!.thumbnails!.maxres!.url);
+         videos.videos![0].video!.thumbnails!.thumbnailsDefault!.url);
     getChannelInfo(videos.videos![0].video!.channelId);
     update();
  //   print(videos.kind);
