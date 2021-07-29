@@ -215,7 +215,7 @@ class _MyHomePageState extends State<MyDownTester> {
         },
         onActionClick: (task) {
           if (task.status == DownloadTaskStatus.undefined) {
-            _requestDownload(task);
+            _requestDownload(task: task,title: "");
           } else if (task.status == DownloadTaskStatus.running) {
             _pauseDownload(task);
           } else if (task.status == DownloadTaskStatus.paused) {
@@ -285,10 +285,10 @@ class _MyHomePageState extends State<MyDownTester> {
     });
   }
 
-  void _requestDownload(_TaskInfo task) async {
-    task.taskId = await FlutterDownloader.enqueue(
+  void _requestDownload({_TaskInfo? task,String? title}) async {
+    task!.taskId = await FlutterDownloader.enqueue(
         url: task.link!,
-        fileName: "YT video test",
+        fileName: title,
         headers: {"auth": "test_for_sql_encoding"},
         savedDir: _localPath,
         showNotification: true,
@@ -329,7 +329,6 @@ class _MyHomePageState extends State<MyDownTester> {
   }
 
   Future<bool> _checkPermission() async {
-    if (widget.platform == TargetPlatform.android) {
       final status = await Permission.storage.status;
       if (status != PermissionStatus.granted) {
         final result = await Permission.storage.request();
@@ -339,9 +338,7 @@ class _MyHomePageState extends State<MyDownTester> {
       } else {
         return true;
       }
-    } else {
-      return true;
-    }
+
     return false;
   }
 

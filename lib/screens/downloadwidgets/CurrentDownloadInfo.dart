@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart' as GetX;
 import 'package:piperdownloader/constants/colorconstants.dart';
 import 'package:piperdownloader/constants/fontconstants.dart';
+import 'package:piperdownloader/getxcontrollers/clipboardcontroller.dart';
 
 class CurrentDownloadInfo extends StatelessWidget {
   final String? thumbnailimagelink;
@@ -10,8 +12,12 @@ class CurrentDownloadInfo extends StatelessWidget {
   final String? channelimage;
   final String? channeltitle;
   final String? channeldescription;
+  final String? extracteddownloadlink;
+  final ClipboardController clipboardController =
+  GetX.Get.put(ClipboardController());
   CurrentDownloadInfo({@required this.thumbnailimagelink,@required this.videotitle
-    ,@required this.channelimage,@required this.channeltitle,@required this.channeldescription});
+    ,@required this.channelimage,@required this.channeltitle,@required this.channeldescription,
+  @required this.extracteddownloadlink});
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -176,7 +182,7 @@ class CurrentDownloadInfo extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  downloadbutton(context)
+                  downloadbutton(context,extracteddownloadlink!,videotitle!)
          //         qualitybox(context, '360p'),
            //       qualitybox(context, '720p')
                 ],
@@ -185,44 +191,50 @@ class CurrentDownloadInfo extends StatelessWidget {
       ),
     );
   }
-  Widget downloadbutton(BuildContext context){
+  Widget downloadbutton(BuildContext context,String downloadlink, String title){
     double screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-      //      height: 30,
+    return GestureDetector(
+      onTap: (){
+        clipboardController.prepare(downloadlink, title);
+
+      },
+      child: Container(
+        //      height: 30,
   //    height: screenWidth * 0.0729,
-    //  width: screenWidth * 0.3849,
-      padding: EdgeInsets.symmetric(vertical: 6,horizontal: 13.5),
-      decoration: BoxDecoration(
-          color: royalbluethemedcolor,
-          borderRadius: BorderRadius.all(Radius.circular(7)),
-          boxShadow: [
-            BoxShadow(
-                color: Color(0xff0062FF).withOpacity(0.28),
-                blurRadius: 10,
-                offset: Offset(0, 3)),
-          ]),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            FeatherIcons.download,
-            //      size: 20,
-            size: screenWidth * 0.0466,
-            color: Colors.white,
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 12),
-            child: Text(
-              "Download",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontFamily: proximanovaregular,
-                  color: Colors.white,
-                  //    fontSize: 14.5
-                  fontSize: screenWidth * 0.0352),
+      //  width: screenWidth * 0.3849,
+        padding: EdgeInsets.symmetric(vertical: 6,horizontal: 13.5),
+        decoration: BoxDecoration(
+            color: royalbluethemedcolor,
+            borderRadius: BorderRadius.all(Radius.circular(7)),
+            boxShadow: [
+              BoxShadow(
+                  color: Color(0xff0062FF).withOpacity(0.28),
+                  blurRadius: 10,
+                  offset: Offset(0, 3)),
+            ]),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              FeatherIcons.download,
+              //      size: 20,
+              size: screenWidth * 0.0466,
+              color: Colors.white,
             ),
-          ),
-        ],
+            Container(
+              margin: EdgeInsets.only(left: 12),
+              child: Text(
+                "Download",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontFamily: proximanovaregular,
+                    color: Colors.white,
+                    //    fontSize: 14.5
+                    fontSize: screenWidth * 0.0352),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
