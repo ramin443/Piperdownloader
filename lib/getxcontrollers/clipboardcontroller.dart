@@ -39,6 +39,12 @@ class ClipboardController extends GetX.GetxController {
   bool? _isLoading;
   ReceivePort _port = ReceivePort();
   List<TaskInfo>? tasks;
+  int? downloadno=0;
+
+  setdownloadno(){
+    downloadno=downloadno!+1;
+    update();
+  }
 
   updatevideoinfo(String? title,String? thumbnailink){
     currentvideotitle=title;
@@ -225,21 +231,23 @@ class ClipboardController extends GetX.GetxController {
       _bindBackgroundIsolate();
       return;
     }
-    _port.listen((dynamic data) {
-      if (debug) {
-        print('UI Isolate Callback: $data');
-      }
-      String id = data[0];
-      DownloadTaskStatus status = data[1];
-      int progress = data[2];
+    if(downloadno==0) {
+      _port.listen((dynamic data) {
+        if (debug) {
+          print('UI Isolate Callback: $data');
+        }
+        String id = data[0];
+        DownloadTaskStatus status = data[1];
+        int progress = data[2];
 
-      if (tasks != null && tasks!.isNotEmpty) {
-        final task = tasks!.firstWhere((task) => task.taskId == id);
+        if (tasks != null && tasks!.isNotEmpty) {
+          final task = tasks!.firstWhere((task) => task.taskId == id);
           task.status = status;
           task.progress = progress;
-      update();
-      }
-    });
+          update();
+        }
+      });
+    }
   }
 
   static void downloadCallback(
@@ -310,6 +318,7 @@ class ClipboardController extends GetX.GetxController {
 
   void requestDownload(
       String downloadlink, String tracktitle) async {
+    setdownloadno();
     final taskId = await FlutterDownloader.enqueue(
         url: downloadlink,
         headers: {"auth": "test_for_sql_encoding"},
