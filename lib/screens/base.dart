@@ -39,17 +39,9 @@ init: BottomNavigationController(),
           backgroundColor: Colors.transparent,
           centerTitle: false,
           actions: [
-            IconButton(onPressed: ()async{
-              await Permission.storage.request();
-              showDialog(context: context,
-                  builder: (_)=>
-                   SimpleDialog(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
-                        ),
-
-                 children:[DeleteVideo()])
-              );
+            IconButton(
+                onPressed: ()async{
+                  clipboardController.loadtasks();
 
             }, icon: Icon(CupertinoIcons.plus,color: Colors.black87,))
           ],

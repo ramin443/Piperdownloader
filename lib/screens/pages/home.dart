@@ -38,7 +38,9 @@ class Home extends StatelessWidget {
               init: ClipboardController(),
               builder: (clipboardcontroller) {
                 return GetBuilder(
-                    initState: (v) {},
+                    initState: (v) {
+                      clipboardController.updateListView();
+                    },
                     init: BottomNavigationController(),
                     builder: (bottomnavigation) {
                       return SingleChildScrollView(

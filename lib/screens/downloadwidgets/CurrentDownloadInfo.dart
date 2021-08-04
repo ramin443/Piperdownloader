@@ -5,6 +5,7 @@ import 'package:get/get.dart' as GetX;
 import 'package:piperdownloader/constants/colorconstants.dart';
 import 'package:piperdownloader/constants/fontconstants.dart';
 import 'package:piperdownloader/getxcontrollers/clipboardcontroller.dart';
+import 'package:piperdownloader/models/Downloaded_Video_Model.dart';
 
 class CurrentDownloadInfo extends StatelessWidget {
   final String? thumbnailimagelink;
@@ -182,7 +183,9 @@ class CurrentDownloadInfo extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  downloadbutton(context,extracteddownloadlink!,videotitle!)
+                  downloadbutton(context,
+
+                      extracteddownloadlink!,videotitle!)
          //         qualitybox(context, '360p'),
            //       qualitybox(context, '720p')
                 ],
@@ -191,7 +194,8 @@ class CurrentDownloadInfo extends StatelessWidget {
       ),
     );
   }
-  Widget downloadbutton(BuildContext context,String downloadlink, String title){
+  Widget downloadbutton(BuildContext context,
+      String downloadlink, String title){
     double screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: (){

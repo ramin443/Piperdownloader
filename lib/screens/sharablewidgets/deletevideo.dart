@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:piperdownloader/constants/colorconstants.dart';
 import 'package:piperdownloader/constants/fontconstants.dart';
 class DeleteVideo extends StatelessWidget {
+  final String? taskid;
+  DeleteVideo({@required this.taskid});
   @override
   Widget build(BuildContext context) {
     double screenwidth=MediaQuery.of(context).size.width;
@@ -69,7 +72,10 @@ class DeleteVideo extends StatelessWidget {
                                 fontSize: screenwidth*0.0352
                             ),),
                         )),
-                        FlatButton(onPressed: (){
+                        FlatButton(onPressed: ()async{
+                          await FlutterDownloader.remove(taskId: taskid.toString(),
+                          shouldDeleteContent: true
+                          );
                         }, child: Container(
                           padding: EdgeInsets.symmetric(
 //                              horizontal: 14,vertical: 5

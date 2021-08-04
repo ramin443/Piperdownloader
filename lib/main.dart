@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:piperdownloader/downloadtests/dbtest.dart';
 import 'package:piperdownloader/downloadtests/downloadtester.dart';
+import 'package:piperdownloader/downloadtests/linkextracttest.dart';
 import 'package:piperdownloader/screens/base.dart';
 import 'package:piperdownloader/screens/initial/splashscreen.dart';
 import 'package:piperdownloader/testers/pubtester.dart';

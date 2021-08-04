@@ -11,13 +11,19 @@ import 'package:flutter_youtube_downloader/flutter_youtube_downloader.dart';
 import 'package:get/get.dart' as GetX;
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:piperdownloader/constants/colorconstants.dart';
+import 'package:piperdownloader/constants/fontconstants.dart';
+import 'package:piperdownloader/dbhelpers/DownloadedVidDBHelper.dart';
 import 'package:piperdownloader/downloadtests/downloadtester.dart';
 import 'package:piperdownloader/getxcontrollers/downloadcontroller.dart';
 import 'package:piperdownloader/getxcontrollers/youtubevideoinfocontroller.dart';
+import 'package:piperdownloader/models/Downloaded_Video_Model.dart';
 import 'package:piperdownloader/models/channelmodels.dart';
 import 'package:piperdownloader/models/video_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:piperdownloader/screens/downloadwidgets/DownloadedVideoCard.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../config.dart';
 
@@ -40,6 +46,10 @@ class ClipboardController extends GetX.GetxController {
   ReceivePort _port = ReceivePort();
   List<TaskInfo>? tasks;
   int? downloadno=0;
+  List<DownloadedVideo> tasklist=[];
+  int count=0;
+  DownloadedVidDatabaseHelper downloadedVidDatabaseHelper=DownloadedVidDatabaseHelper();
+  List<TaskInfo> taskss = [];
 
   setdownloadno(){
     downloadno=downloadno!+1;
@@ -59,12 +69,12 @@ class ClipboardController extends GetX.GetxController {
     update();
   }
   checkyoutubestatus() {
-    if (linkfieldcontroller.text.contains("youtube")) {
+    if (linkfieldcontroller.text.contains("you")) {
       showdownload = 1;
       downloadController.sethasvalidlink();
       update();
     }
-    if (!linkfieldcontroller.text.contains("youtube")) {
+    if (!linkfieldcontroller.text.contains("you")) {
       showdownload = 0;
       downloadController.setnovalidlink();
       update();
@@ -73,7 +83,7 @@ class ClipboardController extends GetX.GetxController {
 
   addclipboardtextlistener() async {
     linkfieldcontroller.addListener(() async {
-      if (linkfieldcontroller.text.contains("youtube")) {
+      if (linkfieldcontroller.text.contains("you")) {
         showdownload = 1;
         downloadController.sethasvalidlink();
         extractYoutubeLink(linkfieldcontroller.text);
@@ -118,6 +128,7 @@ class ClipboardController extends GetX.GetxController {
 
     } on PlatformException {
       link = 'Failed to Extract YouTube Video Link.';
+      print('failed to extract');
     }
     update();
   }
@@ -154,6 +165,7 @@ class ClipboardController extends GetX.GetxController {
     showdownload = 0;
     update();
   }
+
   Future<int> getvideoinfo(String videoid) async {
     Map<String, String> parameters = {
       'part': 'snippet',
@@ -207,6 +219,28 @@ class ClipboardController extends GetX.GetxController {
   //  print("Channel thumbnal");
     //print(channelInfo.items![0].snippet!.thumbnails!.high!.url);
     return channelInfo;
+  }
+  emptyall(){
+
+  }
+  loadtasks() async {
+    emptyall();
+    List<DownloadTask>? tasks = await FlutterDownloader.loadTasks();
+    taskss.addAll(tasks!.map((document) => TaskInfo(
+      taskId: document.taskId,
+      status: document.status,
+      progress: document.progress,
+      name: document.filename,
+      link: document.url,
+      filepath: document.savedDir,
+    )));
+    taskss.removeWhere((element) => element.status==DownloadTaskStatus.canceled);
+    taskss.removeWhere((element) => element.status==DownloadTaskStatus.failed);
+    for(int i=0;i<=taskss.length-1;i++){
+      print("Download name:"+taskss[i].name.toString());
+    }
+    //  tasks[0].savedDir
+    update();
   }
 
   initializedownload(
@@ -326,19 +360,126 @@ class ClipboardController extends GetX.GetxController {
         fileName: tracktitle,
         showNotification: true,
         openFileFromNotification: true);
+    _save(DownloadedVideo(currentvideotitle, currentvideothumbnaillink,
+        currentyoutubechannelthumbnaillink, currentytchanneltitle,
+        currentytchanneldescription, taskId, _localPath!));
+    updateListView();
+  }
+  void _save(DownloadedVideo downloadedVideo) async {
+
+    int result;
+    if (downloadedVideo.id != null) {  // Case 1: Update operation
+      result = await downloadedVidDatabaseHelper.updateDownload(downloadedVideo);
+    } else { // Case 2: Insert Operation
+      result = await downloadedVidDatabaseHelper.insertDownload(downloadedVideo);
+    }
+
+    if (result != 0) {  // Success
+      print('Download saved succesfully');
+    } else {  // Failure
+      print('Problem Saving Download');
+    }
+
+  }
+
+  void _delete(int id) async {
+    int result = await downloadedVidDatabaseHelper.deleteDownload(id);
+    if (result != 0) {
+      print("Deleted succesfully");
+    } else {
+      print("Delete unsuccesful");
+    }
+  }
+
+  void updateListView() {
+
+    final Future<Database> dbFuture = downloadedVidDatabaseHelper.initializeDatabase();
+    dbFuture.then((database) {
+
+      Future<List<DownloadedVideo>> noteListFuture = downloadedVidDatabaseHelper.getNoteList();
+      noteListFuture.then((noteList) {
+        this.tasklist = noteList;
+        this.count = noteList.length;
+      });
+    });
+    for(int i=0;i<=tasklist.length-1;i++){
+      print("Video length"+tasklist.length.toString());
+      print("Video image: "+tasklist[i].videothumbnailurl.toString());
+    }
+  }
+  Widget topdownloadrow(BuildContext context) {
+    double screenwidth = MediaQuery.of(context).size.width;
+    return Container(
+      margin: EdgeInsets.only(
+//      top: 22
+          top: screenwidth * 0.0462),
+      padding: EdgeInsets.symmetric(
+//      horizontal: 21
+          horizontal: screenwidth * 0.05109),
+      width: screenwidth,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Container(
+            child: Text(
+              "All Downloads",
+              style: TextStyle(
+                  fontFamily: proximanovabold,
+                  color: blackthemedcolor,
+                  //   fontSize: 19
+                  fontSize: screenwidth * 0.0462),
+            ),
+          ),
+          Container(
+            child: Text(
+              tasklist.length.toString()+" files",
+              style: TextStyle(
+                  fontFamily: proximanovaregular,
+                  color: blackthemedcolor,
+                  //   fontSize: 14
+                  fontSize: screenwidth * 0.0340),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget downloadedvideolist(BuildContext context){
+    double screenwidth=MediaQuery.of(context).size.width;
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: screenwidth*0.0535),
+
+      child: ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: tasklist.length,
+          itemBuilder: (context,index){
+        return DownloadedVideoCard(downloadedvideo:
+          DownloadedVideo(this.tasklist[index].videotitle, this.tasklist[index].videothumbnailurl,
+              this.tasklist[index].channelthumbnailurl, this.tasklist[index].channeltitle,
+              this.tasklist[index].channeldescription, this.tasklist[index].taskid,
+              this.tasklist[index].filepath),);
+
+      }),
+    );
   }
 
 
+
 }
+
 class TaskInfo {
  late final String? name;
  late final String? link;
  late final String? filepath;
- late String taskId;
- late int progress = 0;
-  DownloadTaskStatus status = DownloadTaskStatus.undefined;
+ late String? taskId;
+ late int? progress = 0;
+  DownloadTaskStatus? status = DownloadTaskStatus.undefined;
 
-  TaskInfo({this.name, this.link, this.filepath});
+  TaskInfo({this.name, this.link, this.filepath,this.taskId,this.progress,this.status});
 }
 
 class _ItemHolder {
