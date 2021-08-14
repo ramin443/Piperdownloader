@@ -8,8 +8,8 @@ import 'package:piperdownloader/screens/sharablewidgets/deletevideo.dart';
 
 class DownloadedVideoCard extends StatelessWidget {
   final DownloadedVideo? downloadedvideo;
-
-  DownloadedVideoCard({@required this.downloadedvideo});
+  final int? index;
+  DownloadedVideoCard({@required this.downloadedvideo,@required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,11 @@ class DownloadedVideoCard extends StatelessWidget {
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(16)),
                                           ),
-                                          children: [DeleteVideo()]));
+                                          children: [DeleteVideo(
+                                            index: index,
+                                            taskid: downloadedvideo!.taskid.toString(),
+
+                                          )]));
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(

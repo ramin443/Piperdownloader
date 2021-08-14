@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:get/get.dart';
 import 'package:piperdownloader/constants/colorconstants.dart';
 import 'package:piperdownloader/constants/fontconstants.dart';
+import 'package:piperdownloader/dbhelpers/DownloadedVidDBHelper.dart';
+import 'package:piperdownloader/getxcontrollers/clipboardcontroller.dart';
+import 'package:piperdownloader/getxcontrollers/downloadcontroller.dart';
 class DeleteVideo extends StatelessWidget {
   final String? taskid;
-  DeleteVideo({@required this.taskid});
+  final int? index;
+  final ClipboardController clipboardController=Get.put(ClipboardController());
+  DownloadedVidDatabaseHelper downloadedVidDatabaseHelper=DownloadedVidDatabaseHelper();
+  DeleteVideo({@required this.taskid,@required this.index});
   @override
   Widget build(BuildContext context) {
     double screenwidth=MediaQuery.of(context).size.width;
@@ -76,6 +83,9 @@ class DeleteVideo extends StatelessWidget {
                           await FlutterDownloader.remove(taskId: taskid.toString(),
                           shouldDeleteContent: true
                           );
+                          _delete(index!);
+                          clipboardController.updateListView();
+                          Navigator.pop(context);
                         }, child: Container(
                           padding: EdgeInsets.symmetric(
 //                              horizontal: 14,vertical: 5
@@ -101,5 +111,13 @@ class DeleteVideo extends StatelessWidget {
                 ],
               ),
             )));
+  }
+  void _delete(int id) async {
+    int result = await downloadedVidDatabaseHelper.deleteDownload(id);
+    if (result != 0) {
+      print("Deleted succesfully");
+    } else {
+      print("Delete unsuccesful");
+    }
   }
 }

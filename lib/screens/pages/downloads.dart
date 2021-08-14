@@ -4,6 +4,7 @@ import 'package:piperdownloader/getxcontrollers/clipboardcontroller.dart';
 import 'package:piperdownloader/getxcontrollers/downloadcontroller.dart';
 class Downloads extends StatelessWidget {
   final DownloadController downloadController=Get.put(DownloadController());
+  final ClipboardController clipboardController=Get.put(ClipboardController());
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class Downloads extends StatelessWidget {
             return GetBuilder(
                 initState: (v){
                   clipboardcontroller.updateListView();
+             //    clipboardController.loadtasks();
                 },  init: DownloadController(),
             builder: (downloadc)=>
         Container(

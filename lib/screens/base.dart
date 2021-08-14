@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:piperdownloader/constants/colorconstants.dart';
 import 'package:piperdownloader/constants/fontconstants.dart';
+import 'package:piperdownloader/downloadtests/linkextracttest.dart';
 import 'package:piperdownloader/getxcontrollers/bottomnavigationcontroller.dart';
 import 'package:piperdownloader/getxcontrollers/clipboardcontroller.dart';
 import 'package:piperdownloader/screens/offline/nointernetpage.dart';
@@ -41,8 +42,8 @@ init: BottomNavigationController(),
           actions: [
             IconButton(
                 onPressed: ()async{
-                  clipboardController.loadtasks();
-
+                  Navigator.push(context, MaterialPageRoute(builder: (context)
+                  =>LinkExtractTest()));
             }, icon: Icon(CupertinoIcons.plus,color: Colors.black87,))
           ],
           leading:

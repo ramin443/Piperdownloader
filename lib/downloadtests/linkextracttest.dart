@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_youtube_downloader/flutter_youtube_downloader.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:piperdownloader/dbhelpers/DownloadedVidDBHelper.dart';
 import 'package:piperdownloader/getxcontrollers/clipboardcontroller.dart';
@@ -16,9 +17,18 @@ class LinkExtractTest extends StatelessWidget {
    int count=0;
 String? extractedlink;
 DownloadedVidDatabaseHelper downloadedVidDatabaseHelper=DownloadedVidDatabaseHelper();
-  @override
+   final ClipboardController clipboardController=Get.put(ClipboardController());
+   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return
+      GetBuilder<ClipboardController>(
+        initState: (v){
+          clipboardController.loadtasks();
+        },
+          init: ClipboardController(),
+          builder: (clipboardcontroller){
+        return
+      Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
@@ -42,7 +52,27 @@ DownloadedVidDatabaseHelper downloadedVidDatabaseHelper=DownloadedVidDatabaseHel
           )),
         ],
       ),
-    );
+      body: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ListView.builder(
+              scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: clipboardcontroller.taskss.length,
+                itemBuilder: (context,index){
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 22,vertical: 11),
+                    child: LinearProgressIndicator(
+                      backgroundColor: Colors.black87,
+                      value: clipboardcontroller.taskss[index].progress!/100,
+                    ),
+                  );
+            })
+          ],
+        ),
+      ),
+    );});
   }
   getdownloads()async{
     List<DownloadTask>? tas=await FlutterDownloader.loadTasks();
