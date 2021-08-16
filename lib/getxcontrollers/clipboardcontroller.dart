@@ -686,7 +686,8 @@ class ClipboardController extends GetX.GetxController {
 //      top: 16
                 top: screenWidth * 0.0389),
             child:
-
+            taskss.length!=0 ?
+            taskss[taskss.length-1-index!].progress==100?
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -720,8 +721,69 @@ class ClipboardController extends GetX.GetxController {
                   ),
                 )
               ],
-            )
-          )
+            ):
+            Column(
+              children: [
+                Container(
+                  margin:EdgeInsets.only(
+//                      top: 12,bottom: 10
+                      top: screenWidth*0.0291,bottom: screenWidth*0.0243
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        child: Text(
+                          taskss[taskss.length-1-index].progress!<100?
+                          "Download in progress":"Download Successful",style: TextStyle(
+                            fontFamily: proximanovaregular,
+                            color: Colors.black87,
+                            fontSize: screenWidth*0.0316
+                        ),
+                        ),
+                      ),
+                      taskss[taskss.length-index-1].progress!<100?Container(
+                        child: Text(
+                          taskss[taskss.length-index-1].progress.toString()+" %",style: TextStyle(
+                            fontFamily: proximanovaregular,
+                            color: Colors.black87,
+                     //       fontSize: 13
+                            fontSize: screenWidth*0.0316
+                        ),
+                        ),
+                      ):
+                      Icon(
+                        CupertinoIcons.checkmark_alt_circle_fill,
+                        color: Color(0xff00C6B0),
+                  //      size: 24,
+                    size: screenWidth*0.0583,  ),
+                    ],
+                  ),
+                ),
+      Container(
+        margin: EdgeInsets.only(
+          //        bottom: 12.5
+            bottom: screenWidth*0.03041  ),
+        child:    ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  child: Container(
+                    width:screenWidth,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: LinearProgressIndicator(
+                      backgroundColor: Color(0xff707070).withOpacity(0.24),
+                      color: taskss[taskss.length-1-index].progress==100?
+                      Color(0xff00C6B0):royalbluethemedcolor,
+                      value: taskss[taskss.length-1-index].progress!/100,
+                    ),
+                  ),
+                ),)
+
+              ],
+
+            ):
+              SizedBox(height: 0,))
         ],
       ),
     );
@@ -1005,7 +1067,10 @@ class ClipboardController extends GetX.GetxController {
                   Column(
                     children: [
                       Container(
-                        margin:EdgeInsets.only(top: 12,bottom: 10),
+                        margin:EdgeInsets.only(
+            //                top: 12,bottom: 10
+                            top: screenwidth*0.0291,bottom: screenwidth*0.0243
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -1015,7 +1080,8 @@ class ClipboardController extends GetX.GetxController {
                                 "Download in progress":"Download Successful",style: TextStyle(
                                 fontFamily: proximanovaregular,
                                 color: Colors.black87,
-                                fontSize: 13
+                   //             fontSize: 13
+                                  fontSize: screenwidth*0.0316
                               ),
                               ),
                             ),
@@ -1024,30 +1090,36 @@ class ClipboardController extends GetX.GetxController {
                                 taskss[taskss.length-1].progress.toString()+" %",style: TextStyle(
                                   fontFamily: proximanovaregular,
                                   color: Colors.black87,
-                                  fontSize: 13
+                          //        fontSize: 13
+                                  fontSize: screenwidth*0.0316
                               ),
                               ),
                             ):
                             Icon(
                               CupertinoIcons.checkmark_alt_circle_fill,
                               color: Color(0xff00C6B0),
-                              size: 24,
-                            ),
+                      //        size: 24,
+                        size: screenwidth*0.0583,    ),
                           ],
                         ),
                       ),
-                      ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        child: Container(
-                          width:screenwidth,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          child: LinearProgressIndicator(
-                            backgroundColor: Color(0xff707070).withOpacity(0.24),
-                            color: taskss[taskss.length-1].progress==100?
-                            Color(0xff00C6B0):royalbluethemedcolor,
-                            value: taskss[taskss.length-1].progress!/100,
+                      Container(
+                        margin: EdgeInsets.only(
+                    //        bottom: 12.5
+                      bottom: screenwidth*0.03041  ),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          child: Container(
+                            width:screenwidth,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                            ),
+                            child: LinearProgressIndicator(
+                              backgroundColor: Color(0xff707070).withOpacity(0.24),
+                              color: taskss[taskss.length-1].progress==100?
+                              Color(0xff00C6B0):royalbluethemedcolor,
+                              value: taskss[taskss.length-1].progress!/100,
+                            ),
                           ),
                         ),
                       ),
@@ -1086,7 +1158,10 @@ class ClipboardController extends GetX.GetxController {
         //      height: 30,
         //    height: screenWidth * 0.0729,
         //  width: screenWidth * 0.3849,
-        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 13.5),
+        padding: EdgeInsets.symmetric(
+//            vertical: 6, horizontal: 13.5
+            vertical: screenWidth*0.0145, horizontal: screenWidth*0.0328
+        ),
         decoration: BoxDecoration(
             color: royalbluethemedcolor,
             borderRadius: BorderRadius.all(Radius.circular(7)),
@@ -1106,7 +1181,9 @@ class ClipboardController extends GetX.GetxController {
               color: Colors.white,
             ),
             Container(
-              margin: EdgeInsets.only(left: 12),
+              margin: EdgeInsets.only(
+          //        left: 12
+            left: screenWidth*0.0291  ),
               child: Text(
                 "Download",
                 textAlign: TextAlign.center,

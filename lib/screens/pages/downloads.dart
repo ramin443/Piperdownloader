@@ -19,6 +19,7 @@ class Downloads extends StatelessWidget {
             return GetBuilder(
                 initState: (v){
                   clipboardcontroller.updateListView();
+                  clipboardcontroller.loadtasks();
              //    clipboardController.loadtasks();
                 },  init: DownloadController(),
             builder: (downloadc)=>
