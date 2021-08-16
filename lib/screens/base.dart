@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:feather_icons/feather_icons.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,7 +15,7 @@ import 'package:piperdownloader/getxcontrollers/clipboardcontroller.dart';
 import 'package:piperdownloader/screens/offline/nointernetpage.dart';
 import 'package:piperdownloader/screens/pages/downloads.dart';
 import 'package:piperdownloader/screens/pages/home.dart';
-import 'package:piperdownloader/screens/pages/settings.dart';
+import 'package:piperdownloader/screens/pages/settings.dart' as Settings;
 import 'package:piperdownloader/screens/sharablewidgets/canceldownload.dart';
 import 'package:piperdownloader/screens/sharablewidgets/deletevideo.dart';
 class Base extends StatelessWidget {
@@ -21,7 +23,7 @@ class Base extends StatelessWidget {
   final ClipboardController clipboardController=Get.put(ClipboardController());
   final Connectivity connectivity = Connectivity();
 
-  List pages=[Home(),Downloads(),Settings()];
+  List pages=[Home(),Downloads(),Settings.Settings()];
   @override
   Widget build(BuildContext context) {
     double screenHeight=MediaQuery.of(context).size.height;
@@ -40,11 +42,12 @@ init: BottomNavigationController(),
           backgroundColor: Colors.transparent,
           centerTitle: false,
           actions: [
-   //         IconButton(
-     //           onPressed: ()async{
-       //           Navigator.push(context, MaterialPageRoute(builder: (context)
-         //         =>LinkExtractTest()));
-           // }, icon: Icon(CupertinoIcons.plus,color: Colors.black87,))
+            IconButton(
+               onPressed: ()async{
+        //         await Firebase.initializeApp();
+          //       await FirebaseFirestore.instance.collection("TestTransmisssion").add(
+            //         {"data":"test succesful"});
+            }, icon: Icon(CupertinoIcons.plus,color: Colors.black87,))
           ],
           leading:
           Container(

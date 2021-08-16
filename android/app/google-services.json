@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "645059457470",
+    "project_id": "tube-video-downloader-ff69e",
+    "storage_bucket": "tube-video-downloader-ff69e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:645059457470:android:c9a7ea6414cad2947189ef",
+        "android_client_info": {
+          "package_name": "com.piperdownloader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "645059457470-argmthu21kd3fld6eec5ebdgo0ntcv48.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYJSjDoBfNesvd0kmllgjjeNkkpU3MK3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "645059457470-argmthu21kd3fld6eec5ebdgo0ntcv48.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
