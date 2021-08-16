@@ -155,7 +155,12 @@ class Home extends StatelessWidget {
                                                           proximanovaregular)),
                                             ))),
                                     GestureDetector(
-                                        onTap: () {},
+                                        onTap: () {
+                                          if(clipboardController.showdownload == 2)
+                                          {
+                                            clipboardcontroller.downloadcurrentvideo();
+                                          }
+                                        },
                                         child: AnimatedContainer(
                                             duration:
                                                 Duration(milliseconds: 200),
@@ -199,6 +204,8 @@ class Home extends StatelessWidget {
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
+                                      clipboardController.showdownload == 3?
+                                          ErrorBox():
                                       clipboardController.showdownload == 1
                                           ? FetchingDownloadsInfo()
                                           : clipboardController.showdownload ==

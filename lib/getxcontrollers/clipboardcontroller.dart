@@ -130,6 +130,7 @@ class ClipboardController extends GetX.GetxController {
       update();
 
     } on PlatformException {
+      showdownload=3;
       link = 'Failed to Extract YouTube Video Link.';
       print('failed to extract');
     }
@@ -186,9 +187,14 @@ class ClipboardController extends GetX.GetxController {
     Response response = await http.get(uri, headers: headers);
   //  print(response.body);
     Videos videos=Videos.fromJson(jsonDecode(response.body));
-       updatevideoinfo(videos.videos![0].video!.title,
-         videos.videos![0].video!.thumbnails!.thumbnailsDefault!.url);
-    getChannelInfo(videos.videos![0].video!.channelId);
+    if(videos.videos!.length==0){
+      showdownload=3;
+    }
+    if(videos.videos!.length!=0){
+      updatevideoinfo(videos.videos![0].video!.title,
+          videos.videos![0].video!.thumbnails!.thumbnailsDefault!.url);
+      getChannelInfo(videos.videos![0].video!.channelId);    }
+
     update();
  //   print(videos.kind);
    // print(videos.videos![0].video!.thumbnails!.maxres!.url);
@@ -586,34 +592,7 @@ class ClipboardController extends GetX.GetxController {
                                 ))
                           ],
                         )),
-                    Container(
-                        width: screenWidth * 0.63,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Container(
-                              child: Text(
-                                "5.2M views",
-                                style: TextStyle(
-                                    fontFamily: proximanovaregular,
-                                    color: greythemedcolor,
-                                    //    fontSize: 14.5
-                                    fontSize: screenWidth * 0.03527),
-                              ),
-                            ),
-                            Container(
-                              child: Text(
-                                "01:45",
-                                style: TextStyle(
-                                    fontFamily: proximanovaregular,
-                                    color: greythemedcolor,
-                                    //    fontSize: 14.5
-                                    fontSize: screenWidth * 0.03527),
-                              ),
-                            ),
-                          ],
-                        )),
+
                   ],
                 ),
               )
@@ -735,23 +714,24 @@ class ClipboardController extends GetX.GetxController {
                       Container(
                         child: Text(
                           taskss[taskss.length-1-index].progress!<100?
-                          "Download in progress":"Download Successful",style: TextStyle(
+                          "Downloading...   "+
+                              taskss[taskss.length-index-1].progress.toString()+" %":"Download Successful",style: TextStyle(
                             fontFamily: proximanovaregular,
                             color: Colors.black87,
                             fontSize: screenWidth*0.0316
                         ),
                         ),
                       ),
-                      taskss[taskss.length-index-1].progress!<100?Container(
-                        child: Text(
-                          taskss[taskss.length-index-1].progress.toString()+" %",style: TextStyle(
-                            fontFamily: proximanovaregular,
-                            color: Colors.black87,
-                     //       fontSize: 13
-                            fontSize: screenWidth*0.0316
-                        ),
-                        ),
-                      ):
+                      taskss[taskss.length-index-1].progress!<100?
+        GestureDetector(
+          onTap: ()async{
+            await FlutterDownloader.cancel(taskId: taskss[taskss.length-1-index].taskId!);
+          },
+          child:Icon(
+    CupertinoIcons.xmark_circle_fill,
+    color: Colors.redAccent.withOpacity(0.80),
+    //      size: 24,
+    size: screenWidth*0.0583,  )):
                       Icon(
                         CupertinoIcons.checkmark_alt_circle_fill,
                         color: Color(0xff00C6B0),
@@ -889,39 +869,7 @@ class ClipboardController extends GetX.GetxController {
                                   fontSize: screenwidth * 0.03527),
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment
-                                .spaceBetween,
-                            children: [
-                              Container(
-                                child:
-                                Text(
-                                  "5.2M views.",
-                                  textAlign:
-                                  TextAlign.center,
-                                  style: TextStyle(
-                                      fontFamily: proximanovaregular,
-                                      color: greythemedcolor,
-                                      //    fontSize: 12.5
-                                      fontSize: screenwidth * 0.03041),
-                                ),
-                              ),
-                              Container(
-                                child:
-                                Text(
-                                  "01:45",
-                                  textAlign:
-                                  TextAlign.center,
-                                  style: TextStyle(
-                                      fontFamily: proximanovaregular,
-                                      color: greythemedcolor,
-                                      //    fontSize: 12.5
-                                      fontSize: screenwidth * 0.03041),
-                                ),
-                              ),
-                            ],
-                          )
+
                         ],
                       ),
                     )),
@@ -1077,7 +1025,8 @@ class ClipboardController extends GetX.GetxController {
                             Container(
                               child: Text(
                                 taskss[taskss.length-1].progress!<100?
-                                "Download in progress":"Download Successful",style: TextStyle(
+                                "Downloading..  "+ taskss[taskss.length-1].progress!.toString()
+                                    +" %":"Download Successful",style: TextStyle(
                                 fontFamily: proximanovaregular,
                                 color: Colors.black87,
                    //             fontSize: 13
@@ -1085,16 +1034,16 @@ class ClipboardController extends GetX.GetxController {
                               ),
                               ),
                             ),
-                            taskss[taskss.length-1].progress!<100?Container(
-                              child: Text(
-                                taskss[taskss.length-1].progress.toString()+" %",style: TextStyle(
-                                  fontFamily: proximanovaregular,
-                                  color: Colors.black87,
-                          //        fontSize: 13
-                                  fontSize: screenwidth*0.0316
-                              ),
-                              ),
-                            ):
+                            taskss[taskss.length-1].progress!<100?
+                            GestureDetector(
+                                onTap: ()async{
+                                  await FlutterDownloader.cancel(taskId: taskss[taskss.length.toInt()-1].taskId!);
+                                },
+                                child:Icon(
+                                  CupertinoIcons.xmark_circle_fill,
+                                  color: Colors.redAccent.withOpacity(0.80),
+                                  //      size: 24,
+                                  size: screenwidth*0.0583,  )):
                             Icon(
                               CupertinoIcons.checkmark_alt_circle_fill,
                               color: Color(0xff00C6B0),
@@ -1145,6 +1094,11 @@ class ClipboardController extends GetX.GetxController {
         ],
       ),
     );
+  }
+  downloadcurrentvideo(){
+    loadtasks();
+    initializedownload(  extractedlink!,
+        currentvideotitle!);
   }
   Widget downloadbutton(
       BuildContext context, String downloadlink, String title) {
