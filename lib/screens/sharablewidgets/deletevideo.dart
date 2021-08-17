@@ -83,7 +83,9 @@ class DeleteVideo extends StatelessWidget {
                           await FlutterDownloader.remove(taskId: taskid.toString(),
                           shouldDeleteContent: true
                           );
-                          _delete(index!);
+                          clipboardController.
+                          deletefromdb(index!);
+                          clipboardController.updateListView();
                           clipboardController.updateListView();
                           Navigator.pop(context);
                         }, child: Container(

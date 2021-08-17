@@ -5,6 +5,7 @@ import 'package:clipboard/clipboard.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:piperdownloader/constants/colorconstants.dart';
 import 'package:piperdownloader/constants/fontconstants.dart';
@@ -156,7 +157,12 @@ class Home extends StatelessWidget {
                                             ))),
                                     GestureDetector(
                                         onTap: () {
-                                          if(clipboardController.showdownload == 2)
+                                          if(clipboardController.showdownload == 2 &&
+                                              clipboardcontroller.taskss[clipboardcontroller.taskss.length-1].status!=
+                                                  DownloadTaskStatus.running &&
+                                              clipboardcontroller.taskss[clipboardcontroller.taskss.length-1].status!=
+                                              DownloadTaskStatus.complete
+                                         )
                                           {
                                             clipboardcontroller.downloadcurrentvideo();
                                           }
@@ -173,7 +179,23 @@ class Home extends StatelessWidget {
                                                 //      vertical: 9
                                                 vertical: screenwidth * 0.0218),
                                             decoration: BoxDecoration(
-                                                color: clipboardController
+                                                color:
+                                                clipboardcontroller.taskss.length==0?
+                                                royalbluethemedcolor
+                                                    .withOpacity(0.41):
+                                                clipboardcontroller.taskss[clipboardcontroller.taskss.length-1].name
+                      ==clipboardcontroller.currentvideotitle &&
+                                                clipboardcontroller.taskss[clipboardcontroller.taskss.length-1].status==
+                                                    DownloadTaskStatus.complete?
+                                                royalbluethemedcolor
+                                                    .withOpacity(0.41):
+                                                clipboardcontroller.taskss[clipboardcontroller.taskss.length-1].name
+                                                    ==clipboardcontroller.currentvideotitle &&
+                                                clipboardcontroller.taskss[clipboardcontroller.taskss.length-1].status==
+                                                        DownloadTaskStatus.running?
+                                                    royalbluethemedcolor
+                                                        .withOpacity(0.41):
+                                                clipboardController
                                                             .showdownload ==
                                                         2
                                                     ? royalbluethemedcolor

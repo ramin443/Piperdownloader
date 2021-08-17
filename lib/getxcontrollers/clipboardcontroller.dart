@@ -291,7 +291,6 @@ class ClipboardController extends GetX.GetxController {
           final task = taskss!.firstWhere((task) => task.taskId == id);
           task.status = status;
           task.progress = progress;
-
           loadtasks();
 
           update();
@@ -380,6 +379,7 @@ class ClipboardController extends GetX.GetxController {
         currentyoutubechannelthumbnaillink, currentytchanneltitle,
         currentytchanneldescription, taskId, _localPath!));
     updateListView();
+    loadtasks();
   }
   void _save(DownloadedVideo downloadedVideo) async {
 
@@ -398,7 +398,7 @@ class ClipboardController extends GetX.GetxController {
 
   }
 
-  void _delete(int id) async {
+  void deletefromdb(int id) async {
     int result = await downloadedVidDatabaseHelper.deleteDownload(id);
     if (result != 0) {
       print("Deleted succesfully");
@@ -416,12 +416,13 @@ class ClipboardController extends GetX.GetxController {
       noteListFuture.then((noteList) {
         this.tasklist = noteList;
         this.count = noteList.length;
+        update();
       });
     });
-    for(int i=0;i<=tasklist.length-1;i++){
-      print("Video length"+tasklist.length.toString());
-      print("Video image: "+tasklist[i].videothumbnailurl.toString());
-    }
+//    for(int i=0;i<=tasklist.length-1;i++){
+  //    print("Video length"+tasklist.length.toString());
+    //  print("Video image: "+tasklist[i].videothumbnailurl.toString());
+ //   }
   }
   Widget topdownloadrow(BuildContext context) {
     double screenwidth = MediaQuery.of(context).size.width;
@@ -558,10 +559,10 @@ class ClipboardController extends GetX.GetxController {
                                                 Radius.circular(16)),
                                           ),
                                           children: [DeleteVideo(
-                                            index: index,
-                                            taskid: downloadedvideo!.taskid.toString(),
+                                            index: this.tasklist[index!].id,
+                                            taskid: taskss[taskss.length-1-index!].taskId),
 
-                                          )]));
+                                          ]));
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
@@ -666,14 +667,14 @@ class ClipboardController extends GetX.GetxController {
                 top: screenWidth * 0.0389),
             child:
             taskss.length!=0 ?
-            taskss[taskss.length-1-index!].progress==100?
+            taskss[taskss.length-1-index!].status==DownloadTaskStatus.complete?
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 GestureDetector(
                   onTap: () async {
                     await FlutterDownloader.open(
-                        taskId: downloadedvideo!.taskid.toString());
+                        taskId: taskss[taskss.length-1-index!].taskId.toString());
                   },
                   child: Container(
 //width:108,height:27,
@@ -713,6 +714,8 @@ class ClipboardController extends GetX.GetxController {
                     children: [
                       Container(
                         child: Text(
+                          taskss[taskss.length-1-index].status==DownloadTaskStatus.canceled?
+                          "Download cancelled":
                           taskss[taskss.length-1-index].progress!<100?
                           "Downloading...   "+
                               taskss[taskss.length-index-1].progress.toString()+" %":"Download Successful",style: TextStyle(
@@ -722,6 +725,17 @@ class ClipboardController extends GetX.GetxController {
                         ),
                         ),
                       ),
+                      taskss[taskss.length-1-index].status==DownloadTaskStatus.canceled?
+                      GestureDetector(
+                          onTap: ()async{
+                            await FlutterDownloader.retry(taskId: taskss[taskss.length.toInt()-1].taskId!);
+                            loadtasks();
+                          },
+                          child:Icon(
+                            CupertinoIcons.refresh_circled_solid,
+                            color: Colors.redAccent.withOpacity(0.80),
+                            //      size: 24,
+                            size: screenWidth*0.0583,  )):
                       taskss[taskss.length-index-1].progress!<100?
         GestureDetector(
           onTap: ()async{
@@ -1024,6 +1038,8 @@ class ClipboardController extends GetX.GetxController {
                           children: [
                             Container(
                               child: Text(
+                                taskss[taskss.length-1].status==DownloadTaskStatus.canceled?
+                                "Download cancelled":
                                 taskss[taskss.length-1].progress!<100?
                                 "Downloading..  "+ taskss[taskss.length-1].progress!.toString()
                                     +" %":"Download Successful",style: TextStyle(
@@ -1034,6 +1050,18 @@ class ClipboardController extends GetX.GetxController {
                               ),
                               ),
                             ),
+                            taskss[taskss.length-1].status==DownloadTaskStatus.canceled?
+                            GestureDetector(
+                                onTap: ()async{
+                                  await FlutterDownloader.retry(taskId: taskss[taskss.length.toInt()-1].taskId!);
+                                  loadtasks();
+                                },
+                                child:Icon(
+                                  CupertinoIcons.refresh_circled_solid,
+                                  color: Colors.redAccent.withOpacity(0.80),
+                                  //      size: 24,
+                                  size: screenwidth*0.0583,  )):
+
                             taskss[taskss.length-1].progress!<100?
                             GestureDetector(
                                 onTap: ()async{

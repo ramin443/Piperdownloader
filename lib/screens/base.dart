@@ -42,12 +42,12 @@ init: BottomNavigationController(),
           backgroundColor: Colors.transparent,
           centerTitle: false,
           actions: [
-            IconButton(
-               onPressed: ()async{
+ //           IconButton(
+   //            onPressed: ()async{
         //         await Firebase.initializeApp();
           //       await FirebaseFirestore.instance.collection("TestTransmisssion").add(
             //         {"data":"test succesful"});
-            }, icon: Icon(CupertinoIcons.plus,color: Colors.black87,))
+     //       }, icon: Icon(CupertinoIcons.plus,color: Colors.black87,))
           ],
           leading:
           Container(
