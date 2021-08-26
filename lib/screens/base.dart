@@ -6,12 +6,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:piperdownloader/constants/colorconstants.dart';
 import 'package:piperdownloader/constants/fontconstants.dart';
 import 'package:piperdownloader/downloadtests/linkextracttest.dart';
 import 'package:piperdownloader/getxcontrollers/bottomnavigationcontroller.dart';
 import 'package:piperdownloader/getxcontrollers/clipboardcontroller.dart';
+import 'package:piperdownloader/instahelpers/getinstadata.dart';
+import 'package:piperdownloader/models/OwnerDetails.dart';
 import 'package:piperdownloader/screens/offline/nointernetpage.dart';
 import 'package:piperdownloader/screens/pages/downloads.dart';
 import 'package:piperdownloader/screens/pages/home.dart';
@@ -42,12 +47,18 @@ init: BottomNavigationController(),
           backgroundColor: Colors.transparent,
           centerTitle: false,
           actions: [
- //           IconButton(
-   //            onPressed: ()async{
+            IconButton(
+               onPressed: ()async{
+                 getpostownerdetails("https://www.instagram.com/p/CRvk2HsA2hw/");
+                 getinstavideoinfo("https://www.instagram.com/p/CRvk2HsA2hw/");
+                 downloadReels("https://www.instagram.com/p/CRvk2HsA2hw/");
+                 getreelsthumbnail("https://www.instagram.com/p/CRvk2HsA2hw/");
+                 //         FacebookPost postdata=await FacebookData.postFromUrl("https://www.facebook.com/5min.crafts/videos/698153117639878/");
+          //       print("PostURL: "+postdata.postUrl.toString());
         //         await Firebase.initializeApp();
           //       await FirebaseFirestore.instance.collection("TestTransmisssion").add(
             //         {"data":"test succesful"});
-     //       }, icon: Icon(CupertinoIcons.plus,color: Colors.black87,))
+           }, icon: Icon(CupertinoIcons.plus,color: Colors.black87,))
           ],
           leading:
           Container(
@@ -125,5 +136,49 @@ fontFamily: proximanovaregular,
     NoInternet():
         pages[bottomNavigationController.currentindex];}),
     );});
+  }
+  getreelsthumbnail(String link)async{
+    var linkEdit = link.replaceAll(" ", "").split("/");
+    var downloadURL = await http.get(Uri.parse('${linkEdit[0]}//${linkEdit[2]}/${linkEdit[3]}/${linkEdit[4]}' + "/?__a=1"));
+    var data = json.decode(downloadURL.body);
+    var graphql = data['graphql'];
+    var shortcodeMedia = graphql['shortcode_media'];
+    var videoUrl = shortcodeMedia['thumbnail_src'];
+    print("Thumbnail"+videoUrl);
+  }
+  Future<String> downloadReels(String link) async {
+    var linkEdit = link.replaceAll(" ", "").split("/");
+    var downloadURL = await http.get(Uri.parse('${linkEdit[0]}//${linkEdit[2]}/${linkEdit[3]}/${linkEdit[4]}' + "/?__a=1"));
+    var data = json.decode(downloadURL.body);
+    var graphql = data['graphql'];
+    var shortcodeMedia = graphql['shortcode_media'];
+    var videoUrl = shortcodeMedia['video_url'];
+    print(videoUrl);
+    return videoUrl; // return download link
+  }
+
+  getpostownerdetails(String instalink)async{
+    var linkEdit = instalink.replaceAll(" ", "").split("/");
+    var downloadURL = await http.get(Uri.parse('${linkEdit[0]}//${linkEdit[2]}/${linkEdit[3]}/${linkEdit[4]}' + "/?__a=1"));
+    var data = json.decode('${downloadURL.body}');
+    var graphql = data['graphql'];
+    var shortcodeMedia = graphql['shortcode_media'];
+    var postdata = shortcodeMedia['owner'];
+    print("Showurl"+postdata.toString());
+    ReelsOwner reelsOwner=ReelsOwner.fromJson(postdata);
+    print("Reels Owner name"+ reelsOwner.fullname.toString());
+  }
+  Future<int> getinstavideoinfo(String instalink)async{
+    var linkEdit = instalink.replaceAll(" ", "").split("/");
+    var downloadURL = await http.get(Uri.parse('${linkEdit[0]}//${linkEdit[2]}/${linkEdit[3]}/${linkEdit[4]}' + "/?__a=1"));
+    var data = json.decode('${downloadURL.body}');
+    var graphql = data['graphql'];
+    var shortcodeMedia = graphql['shortcode_media'];
+    var edgemediatocaption = shortcodeMedia['edge_media_to_caption'];
+    var edges = edgemediatocaption['edges'][0];
+    var node = edges['node'];
+    var caption = node['text'];
+    print("Caption is:"+caption);
+    return 0;
   }
 }

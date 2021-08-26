@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
+import 'package:http/http.dart' as http;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clipboard/clipboard.dart';
@@ -21,6 +22,7 @@ import 'package:piperdownloader/downloadtests/downloadtester.dart';
 import 'package:piperdownloader/getxcontrollers/downloadcontroller.dart';
 import 'package:piperdownloader/getxcontrollers/youtubevideoinfocontroller.dart';
 import 'package:piperdownloader/models/Downloaded_Video_Model.dart';
+import 'package:piperdownloader/models/OwnerDetails.dart';
 import 'package:piperdownloader/models/channelmodels.dart';
 import 'package:piperdownloader/models/video_model.dart';
 import 'package:http/http.dart' as http;
@@ -59,7 +61,7 @@ class ClipboardController extends GetX.GetxController {
     update();
   }
 
-  updatevideoinfo(String? title,String? thumbnailink){
+  updateinstainfo(String? title,String? thumbnailink){
     currentvideotitle=title;
     currentvideothumbnaillink=thumbnailink;
     update();
@@ -72,25 +74,32 @@ class ClipboardController extends GetX.GetxController {
     update();
   }
   checkyoutubestatus() {
-    if (linkfieldcontroller.text.contains("you")) {
-      showdownload = 1;
+    if (linkfieldcontroller.text.contains("insta")) {
+      showdownload = 2;
       downloadController.sethasvalidlink();
       update();
     }
-    if (!linkfieldcontroller.text.contains("you")) {
+    if (!linkfieldcontroller.text.contains("insta")) {
       showdownload = 0;
       downloadController.setnovalidlink();
       update();
     }
   }
+  getreelsvideodata(String link)async{
 
+    getinstavideoinfo(link);
+    downloadReels(link);
+    getpostownerdetails(link);
+    getreelsthumbnail(link);
+update();
+  }
   addclipboardtextlistener() async {
     linkfieldcontroller.addListener(() async {
-      if (linkfieldcontroller.text.contains("you")) {
+      if (linkfieldcontroller.text.contains("insta")) {
         showdownload = 1;
         downloadController.sethasvalidlink();
-        extractYoutubeLink(linkfieldcontroller.text);
-
+        print("firsttimestamp");
+        getreelsvideodata(linkfieldcontroller.text);
         update();
       }
 
@@ -116,6 +125,28 @@ class ClipboardController extends GetX.GetxController {
     }
     update();
   }
+
+  Future<void> extractinstalink(String instalink)async{
+    try{
+      var linkEdit = instalink.replaceAll(" ", "").split("/");
+      var downloadURL = await http.get(Uri.parse('${linkEdit[0]}//${linkEdit[2]}/${linkEdit[3]}/${linkEdit[4]}' + "/?__a=1"));
+      var data = json.decode('${downloadURL.body}');
+      var graphql = data['graphql'];
+      var shortcodeMedia = graphql['shortcode_media'];
+      var videoUrl = shortcodeMedia['video_url'];
+      extractedlink = videoUrl;
+      print(extractedlink);
+      update();
+    //  return videoUrl;
+    } on PlatformException{
+      showdownload=3;
+    //  link = 'Failed to Extract YouTube Video Link.';
+      print('failed to extract');
+      update();
+    }
+
+  }
+
   Future<void> extractYoutubeLink(String youtubelink) async {
     String? link;
     // Platform messages may fail, so we use a try/catch PlatformException.
@@ -152,7 +183,7 @@ class ClipboardController extends GetX.GetxController {
       // Do what ever you want with the value.
       linkfieldcontroller.text = value;
       clipboarddata = value;
-      if (value.contains("you")) {
+      if (value.contains("instagram")) {
         showdownload = 1;
       }
       update();
@@ -168,6 +199,31 @@ class ClipboardController extends GetX.GetxController {
     }
     showdownload = 0;
     update();
+  }
+  Future<int> getinstavideocaption(String instalink)async{
+    var linkEdit = instalink.replaceAll(" ", "").split("/");
+    var downloadURL = await http.get(Uri.parse('${linkEdit[0]}//${linkEdit[2]}/${linkEdit[3]}/${linkEdit[4]}' + "/?__a=1"));
+    var data = json.decode('${downloadURL.body}');
+    var graphql = data['graphql'];
+    var shortcodeMedia = graphql['shortcode_media'];
+    var edgemediatocaption = shortcodeMedia['edge_media_to_caption'];
+    var edges = edgemediatocaption['edges'][0];
+    var node = edges['node'];
+    var caption = node['text'];
+    print(caption);
+    return 0;
+  }
+
+  getinstavideothumbnail(String instalink)async{
+    var linkEdit = instalink.replaceAll(" ", "").split("/");
+    var downloadURL = await http.get(Uri.parse('${linkEdit[0]}//${linkEdit[2]}/${linkEdit[3]}/${linkEdit[4]}' + "/?__a=1"));
+    var data = json.decode('${downloadURL.body}');
+    var graphql = data['graphql'];
+    var shortcodeMedia = graphql['shortcode_media'];
+ //   var videoUrl = shortcodeMedia['video_url'];
+   // var postdata = shortcodeMedia['owner'];
+    var thumbnaildata = shortcodeMedia['thumbnail_src'];
+    print("thumbnailpic"+thumbnaildata.toString());
   }
 
   Future<int> getvideoinfo(String videoid) async {
@@ -191,8 +247,8 @@ class ClipboardController extends GetX.GetxController {
       showdownload=3;
     }
     if(videos.videos!.length!=0){
-      updatevideoinfo(videos.videos![0].video!.title,
-          videos.videos![0].video!.thumbnails!.thumbnailsDefault!.url);
+ //     updatevideoinfo(videos.videos![0].video!.title,
+   //       videos.videos![0].video!.thumbnails!.thumbnailsDefault!.url);
       getChannelInfo(videos.videos![0].video!.channelId);    }
 
     update();
@@ -1182,9 +1238,77 @@ class ClipboardController extends GetX.GetxController {
     );
   }
 
-  getdownloadslist(){
+ downloadReels(String link) async {
+    try {
+      var linkEdit = link.replaceAll(" ", "").split("/");
+      var downloadURL = await http.get(Uri.parse('${linkEdit[0]}//${linkEdit[2]}/${linkEdit[3]}/${linkEdit[4]}' + "/?__a=1"));
+      var data = json.decode(downloadURL.body);
+      var graphql = data['graphql'];
+      var shortcodeMedia = graphql['shortcode_media'];
+      var videoUrl = shortcodeMedia['video_url'];
+      extractedlink=videoUrl;
+      showdownload=2;
+      update();
+      print(videoUrl);
+   //   return videoUrl;
+      //    print("tried");
 
+
+    } on PlatformException {
+      showdownload=3;
+
+      link = 'Failed to Extract Instagram Video Link.';
+      print('failed to extract');
+    }
+    update();
+// return download link
   }
+
+  getpostownerdetails(String instalink)async{
+    var linkEdit = instalink.replaceAll(" ", "").split("/");
+    var downloadURL = await http.get(Uri.parse('${linkEdit[0]}//${linkEdit[2]}/${linkEdit[3]}/${linkEdit[4]}' + "/?__a=1"));
+    var data = json.decode('${downloadURL.body}');
+    var graphql = data['graphql'];
+    var shortcodeMedia = graphql['shortcode_media'];
+    var postdata = shortcodeMedia['owner'];
+    print("Showurl"+postdata.toString());
+    ReelsOwner reelsOwner=ReelsOwner.fromJson(postdata);
+    print("Reels Owner name"+ reelsOwner.fullname.toString());
+    currentyoutubechannelthumbnaillink=reelsOwner.profilepicurl.toString();
+    currentytchanneltitle=reelsOwner.username.toString();
+    currentytchanneldescription=reelsOwner.fullname.toString();
+    showdownload=2;
+    update();
+  }
+  getreelsthumbnail(String link)async{
+    var linkEdit = link.replaceAll(" ", "").split("/");
+    var downloadURL = await http.get(Uri.parse('${linkEdit[0]}//${linkEdit[2]}/${linkEdit[3]}/${linkEdit[4]}' + "/?__a=1"));
+    var data = json.decode(downloadURL.body);
+    var graphql = data['graphql'];
+    var shortcodeMedia = graphql['shortcode_media'];
+    var thumbnailUrl = shortcodeMedia['thumbnail_src'];
+ //   print("Thumbnail"+thumbnailUrl);
+    currentvideothumbnaillink=thumbnailUrl;
+    showdownload=2;
+    update();
+  }
+
+  Future<int> getinstavideoinfo(String instalink)async{
+    var linkEdit = instalink.replaceAll(" ", "").split("/");
+    var downloadURL = await http.get(Uri.parse('${linkEdit[0]}//${linkEdit[2]}/${linkEdit[3]}/${linkEdit[4]}' + "/?__a=1"));
+    var data = json.decode('${downloadURL.body}');
+    var graphql = data['graphql'];
+    var shortcodeMedia = graphql['shortcode_media'];
+    var edgemediatocaption = shortcodeMedia['edge_media_to_caption'];
+    var edges = edgemediatocaption['edges'][0];
+    var node = edges['node'];
+    var caption = node['text'];
+    currentvideotitle=caption;
+    showdownload=2;
+    update();
+    return 0;
+  }
+
 
 
 }
