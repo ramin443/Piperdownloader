@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:firebase_core/firebase_core.dart';

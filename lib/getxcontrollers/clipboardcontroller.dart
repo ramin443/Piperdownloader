@@ -86,7 +86,6 @@ class ClipboardController extends GetX.GetxController {
     }
   }
   getreelsvideodata(String link)async{
-
     getinstavideoinfo(link);
     downloadReels(link);
     getpostownerdetails(link);
@@ -342,13 +341,13 @@ update();
         loadtasks();
         if(progress==100){
           loadtasks();
+          update();
         }
-        if (taskss != null && taskss!.isNotEmpty) {
+        if ( taskss.isNotEmpty) {
           final task = taskss!.firstWhere((task) => task.taskId == id);
           task.status = status;
           task.progress = progress;
           loadtasks();
-
           update();
         }
       });
@@ -428,7 +427,7 @@ update();
         url: downloadlink,
         headers: {"auth": "test_for_sql_encoding"},
         savedDir: _localPath!,
-        fileName: tracktitle,
+        fileName: tracktitle.substring(0,17),
         showNotification: true,
         openFileFromNotification: true);
     _save(DownloadedVideo(currentvideotitle, currentvideothumbnaillink,
@@ -616,7 +615,7 @@ update();
                                           ),
                                           children: [DeleteVideo(
                                             index: this.tasklist[index!].id,
-                                            taskid: taskss[taskss.length-1-index!].taskId),
+                                            taskid: taskss[taskss.length-1-index].taskId),
 
                                           ]));
                                 },
@@ -671,7 +670,7 @@ update();
                       color: greythemedcolor,
                     ),
                     child: CachedNetworkImage(
-                      imageUrl: downloadedvideo!.channelthumbnailurl.toString(),
+                      imageUrl: downloadedvideo.channelthumbnailurl.toString(),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -1046,7 +1045,7 @@ update();
                   top: 20),
               child:
               taskss.length!=0 &&
-    taskss[taskss.length-1].name==currentvideotitle?
+    taskss[taskss.length-1].name==currentvideotitle!.substring(0,17)?
               taskss[taskss.length-1].status==DownloadTaskStatus.complete?
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1189,8 +1188,8 @@ update();
     double screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
-        loadtasks();
         initializedownload(downloadlink, title);
+        loadtasks();
       },
       child: Container(
         //      height: 30,
