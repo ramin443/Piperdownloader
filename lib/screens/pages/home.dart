@@ -106,7 +106,7 @@ class Home extends StatelessWidget {
                                         ),
                                         border: InputBorder.none,
                                         hintText:
-                                            "Paste Youtube video link here",
+                                            "Paste Instagram Reels video link here",
                                         hintStyle: TextStyle(
                                             color:
                                                 Colors.black.withOpacity(0.43),
@@ -276,7 +276,7 @@ class Home extends StatelessWidget {
         children: [
           Container(
             child: Text(
-              "Copy link from a Youtube Video\n& start downloading",
+              "Copy link from a Instagram Reels Video\n& start downloading",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontFamily: proximanovaregular,

@@ -161,7 +161,7 @@ update();
 
     } on PlatformException {
       showdownload=3;
-      link = 'Failed to Extract YouTube Video Link.';
+      link = 'Failed to Extract Reels Video Link.';
       print('failed to extract');
     }
     update();
@@ -1044,8 +1044,13 @@ update();
               EdgeInsets.only(
                   top: 20),
               child:
+                  currentvideotitle!=null &&
               taskss.length!=0 &&
-    taskss[taskss.length-1].name==currentvideotitle!.substring(0,17)?
+
+    taskss[taskss.length-1].name==
+        currentvideotitle!.substring(0,
+        currentvideotitle!.length>17?17:currentvideotitle!.length-1
+        )?
               taskss[taskss.length-1].status==DownloadTaskStatus.complete?
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

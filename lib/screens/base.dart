@@ -67,12 +67,12 @@ init: BottomNavigationController(),
 
             ),
       child:
-          SvgPicture.asset("assets/images/ytdownlogo.svg",
+          SvgPicture.asset("assets/images/Reels logo SVG.svg",
        //   height: 42,width: 42,
          height: screenWidth*0.1021,width: screenWidth*0.1021,
           )),
           title: Container(
-             child: Text("Youtube\nVideo Downloader",style: TextStyle(
+             child: Text("Reels Video\nDownloader",style: TextStyle(
                fontFamily: proximanovaregular,
                color: blackthemedcolor,
        //        fontSize: 18

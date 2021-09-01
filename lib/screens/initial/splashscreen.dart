@@ -51,11 +51,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
             height: screenHeight,
             width: screenWidth,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xffFC3434),Color(0xffFF6767)]
-              )
+              color: Colors.white
             ),
           ),
           Scaffold(
@@ -69,12 +65,12 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
               children: [
               AnimatedContainer(duration: Duration(milliseconds: 1200),
     margin: EdgeInsets.only(bottom: upanimation.value),
-    child:SvgPicture.asset("assets/images/downloadsplashlogo.svg",)),
+    child:SvgPicture.asset("assets/images/Reels logo SVG.svg",width: 150,)),
                 Container(
-                  child: Text("Youtube Video Downloader",
+                  child: Text("Reels Video Downloader",
                   style: TextStyle(
                     fontFamily:proximanovaregular,
-                    color: Colors.white
+                    color: Colors.black
 ,
                       fontSize: screenWidth*0.0583
                       //fontSize: 24),

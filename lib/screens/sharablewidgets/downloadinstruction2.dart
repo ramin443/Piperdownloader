@@ -55,9 +55,9 @@ class DownloadInstructionTwo extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                getastep(context, 1, "Open Youtube app in your device."),
+                getastep(context, 1, "Open Instagram app in your device."),
                 getastep(context, 2,
-                    "Choose and open the video you want to\ndownload."),
+                    "Choose and open the reels video you want to\ndownload."),
                 getastep(
                     context,
                     3,
