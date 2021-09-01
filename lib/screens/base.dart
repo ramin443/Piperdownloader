@@ -46,18 +46,18 @@ init: BottomNavigationController(),
           backgroundColor: Colors.transparent,
           centerTitle: false,
           actions: [
-            IconButton(
-               onPressed: ()async{
-                 getpostownerdetails("https://www.instagram.com/p/CRvk2HsA2hw/");
-                 getinstavideoinfo("https://www.instagram.com/p/CRvk2HsA2hw/");
-                 downloadReels("https://www.instagram.com/p/CRvk2HsA2hw/");
-                 getreelsthumbnail("https://www.instagram.com/p/CRvk2HsA2hw/");
+     //       IconButton(
+ //              onPressed: ()async{
+           //      getpostownerdetails("https://www.instagram.com/p/CRvk2HsA2hw/");
+             //    getinstavideoinfo("https://www.instagram.com/p/CRvk2HsA2hw/");
+               //  downloadReels("https://www.instagram.com/p/CRvk2HsA2hw/");
+                 //getreelsthumbnail("https://www.instagram.com/p/CRvk2HsA2hw/");
                  //         FacebookPost postdata=await FacebookData.postFromUrl("https://www.facebook.com/5min.crafts/videos/698153117639878/");
           //       print("PostURL: "+postdata.postUrl.toString());
         //         await Firebase.initializeApp();
           //       await FirebaseFirestore.instance.collection("TestTransmisssion").add(
             //         {"data":"test succesful"});
-           }, icon: Icon(CupertinoIcons.plus,color: Colors.black87,))
+    //       }, icon: Icon(CupertinoIcons.plus,color: Colors.black87,))
           ],
           leading:
           Container(
