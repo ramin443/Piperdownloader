@@ -216,13 +216,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.6.1"
-  flutter_insta:
-    dependency: "direct main"
-    description:
-      name: flutter_insta
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   flutter_rating_bar:
     dependency: transitive
     description:
@@ -490,13 +483,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  social_share:
-    dependency: "direct main"
-    description:
-      name: social_share
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.1"
   source_span:
     dependency: transitive
     description:

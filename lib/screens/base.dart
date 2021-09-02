@@ -46,8 +46,9 @@ init: BottomNavigationController(),
           backgroundColor: Colors.transparent,
           centerTitle: false,
           actions: [
-     //       IconButton(
- //              onPressed: ()async{
+            IconButton(
+               onPressed: ()async{
+                 clipboardController.showrateappdialog(context);
            //      getpostownerdetails("https://www.instagram.com/p/CRvk2HsA2hw/");
              //    getinstavideoinfo("https://www.instagram.com/p/CRvk2HsA2hw/");
                //  downloadReels("https://www.instagram.com/p/CRvk2HsA2hw/");
@@ -57,7 +58,7 @@ init: BottomNavigationController(),
         //         await Firebase.initializeApp();
           //       await FirebaseFirestore.instance.collection("TestTransmisssion").add(
             //         {"data":"test succesful"});
-    //       }, icon: Icon(CupertinoIcons.plus,color: Colors.black87,))
+           }, icon: Icon(CupertinoIcons.plus,color: Colors.black87,))
           ],
           leading:
           Container(

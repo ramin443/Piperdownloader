@@ -29,6 +29,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:piperdownloader/screens/downloadwidgets/DownloadedVideoCard.dart';
 import 'package:piperdownloader/screens/sharablewidgets/deletevideo.dart';
+import 'package:rate_my_app/rate_my_app.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../config.dart';
@@ -837,7 +838,15 @@ update();
       ),
     );
   }
+  showrateappdialog(BuildContext context)async{
+    RateMyApp rateMyApp = RateMyApp(
 
+      preferencesPrefix: 'rateMyApp_',
+      minDays: 2, // Show rate popup on first day of install.
+      minLaunches: 5, // Show rate popup after 5 launches of app after minDays is passed.
+    );
+    rateMyApp.showRateDialog(context);
+  }
   Widget homepagedownloadvideo(BuildContext context){
     double screenwidth = MediaQuery.of(context).size.width;
     return  Container(
